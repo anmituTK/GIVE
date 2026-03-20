@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GIVE｜ひとりで抱えなくていい。</title>
+  <meta name="description" content="GIVEは、誰かに話したいと思った時のための無料相談サービスです。LINEで気軽に、誰かに話してみませんか。">
+  <meta property="og:title" content="GIVE｜ひとりで抱えなくていい。">
+  <meta property="og:description" content="無料・LINEで気軽に話せる場所。あなたの気持ちを、ここで少しだけ降ろしてみませんか。">
+  <meta property="og:type" content="website">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'M PLUS Rounded 1c', sans-serif;
+      color: #3D3D3D;
+      background-color: #FFFAF5;
+      line-height: 1.9;
+      font-size: 15px;
+      -webkit-font-smoothing: antialiased;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    /* ========== Hero ========== */
+    .hero {
+      min-height: 100vh;
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem 1.5rem;
+      position: relative;
+      overflow: hidden;
+      background: #f0f4f0;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url('hydrangea.jpg') center 50% / cover no-repeat;
+      filter: brightness(0.5) blur(1.5px);
+      z-index: 0;
+    }
+
+    .hero > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-logo {
+      font-size: 3rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.15em;
+      margin-bottom: 0.8rem;
+      text-shadow: 0 2px 20px rgba(0,0,0,0.3);
+    }
+
+    .hero-tagline {
+      font-size: 1.15rem;
+      color: rgba(255,255,255,0.95);
+      margin-bottom: 1.2rem;
+      font-weight: 400;
+      text-shadow: 0 1px 10px rgba(0,0,0,0.3);
+    }
+
+    .hero-sub {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.8);
+      margin-bottom: 3rem;
+      text-shadow: 0 1px 8px rgba(0,0,0,0.3);
+      line-height: 1.8;
+    }
+
+    /* ---- Rain Animation ---- */
+    .rain-container {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .raindrop {
+      position: absolute;
+      top: -10%;
+      width: 1px;
+      height: 18px;
+      background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.25));
+      animation: rain-fall linear infinite;
+    }
+
+    @keyframes rain-fall {
+      0% { transform: translateY(-10vh); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateY(110vh); opacity: 0; }
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 2rem;
+      animation: bounce 2s infinite;
+      color: rgba(255,255,255,0.6);
+      font-size: 0.8rem;
+    }
+
+    .scroll-hint::after {
+      content: '';
+      display: block;
+      width: 1px;
+      height: 24px;
+      background: rgba(255,255,255,0.4);
+      margin: 0.4rem auto 0;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(8px); }
+    }
+
+    /* ========== Sections Common ========== */
+    section {
+      padding: 3.5rem 1.25rem;
+    }
+
+    .section-inner {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #6B8EB5;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    /* ========== Story ========== */
+    .story {
+      background-color: #FFFAF5;
+    }
+
+    .story-block {
+      margin-bottom: 2rem;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .story-block.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .story-block p {
+      font-size: 0.95rem;
+      line-height: 2;
+      color: #4a4a4a;
+    }
+
+    .story-highlight {
+      background: linear-gradient(transparent 60%, #D4E4F0 60%);
+      padding: 0 0.2em;
+    }
+
+    .story-divider {
+      width: 40px;
+      height: 2px;
+      background: #8EB5D6;
+      margin: 2.5rem auto;
+      border: none;
+      opacity: 0.5;
+    }
+
+    /* ========== Hydrangea Message ========== */
+    .hydrangea-message {
+      background: linear-gradient(180deg, #FFFAF5 0%, #F2F6FA 50%, #FFFAF5 100%);
+      text-align: center;
+      padding: 3rem 1.25rem;
+    }
+
+    .hydrangea-message .section-inner {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 1s ease, transform 1s ease;
+    }
+
+    .hydrangea-message .section-inner.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .hydrangea-quote {
+      font-size: 0.95rem;
+      color: #6B8EB5;
+      line-height: 2.2;
+      font-weight: 400;
+    }
+
+    .hydrangea-quote strong {
+      color: #5A8AB5;
+      font-weight: 700;
+    }
+
+    /* ========== Features ========== */
+    .features {
+      background: linear-gradient(180deg, #F8FAFC 0%, #FFFAF5 100%);
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .feature-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 1.5rem 1.25rem;
+      text-align: center;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .feature-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .feature-icon {
+      font-size: 1.8rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .feature-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #6B8EB5;
+      margin-bottom: 0.3rem;
+    }
+
+    .feature-desc {
+      font-size: 0.85rem;
+      color: #6B6B6B;
+      line-height: 1.7;
+    }
+
+    /* ========== For You ========== */
+    .for-you {
+      background-color: #FFFAF5;
+    }
+
+    .for-you-list {
+      list-style: none;
+      margin-bottom: 1.5rem;
+    }
+
+    .for-you-list li {
+      font-size: 0.95rem;
+      padding: 0.7rem 0;
+      padding-left: 1.3rem;
+      position: relative;
+      color: #4a4a4a;
+      opacity: 0;
+      transform: translateX(-10px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .for-you-list li.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .for-you-list li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 1.2rem;
+      width: 7px;
+      height: 7px;
+      background: #8EB5D6;
+      border-radius: 50%;
+      opacity: 0.6;
+    }
+
+    .for-you-message {
+      text-align: center;
+      font-size: 0.95rem;
+      color: #6B6B6B;
+      margin-top: 1rem;
+      line-height: 2;
+      opacity: 0;
+      transition: opacity 0.8s ease;
+    }
+
+    .for-you-message.visible {
+      opacity: 1;
+    }
+
+    /* ========== CTA ========== */
+    .cta {
+      background: linear-gradient(180deg, #FFFAF5 0%, #F2F6FA 100%);
+      text-align: center;
+      padding: 3.5rem 1.25rem 3rem;
+    }
+
+    .cta-message {
+      font-size: 0.95rem;
+      color: #6B6B6B;
+      margin-bottom: 2rem;
+      line-height: 2;
+    }
+
+    .line-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: #06C755;
+      color: #fff;
+      font-family: 'M PLUS Rounded 1c', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      padding: 0.9rem 2rem;
+      border-radius: 50px;
+      text-decoration: none;
+      box-shadow: 0 4px 16px rgba(6, 199, 85, 0.25);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .line-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(6, 199, 85, 0.35);
+    }
+
+    .line-button:active {
+      transform: translateY(0);
+    }
+
+    .line-button svg {
+      width: 22px;
+      height: 22px;
+      fill: #fff;
+    }
+
+    .cta-note {
+      margin-top: 1.2rem;
+      font-size: 0.8rem;
+      color: #aaa;
+      line-height: 1.8;
+    }
+
+    /* ========== Footer ========== */
+    footer {
+      text-align: center;
+      padding: 2rem 1.25rem;
+      background: #FFFAF5;
+      border-top: 1px solid #e8eef3;
+    }
+
+    .footer-disclaimer {
+      font-size: 0.75rem;
+      color: #aaa;
+      margin-bottom: 0.4rem;
+    }
+
+    .footer-copy {
+      font-size: 0.7rem;
+      color: #ccc;
+    }
+
+    /* ========== PC (768px~) ========== */
+    @media (min-width: 768px) {
+      body {
+        font-size: 16px;
+      }
+
+      .hero-logo {
+        font-size: 5rem;
+      }
+
+      .hero-tagline {
+        font-size: 1.5rem;
+      }
+
+      .hero-sub {
+        font-size: 0.95rem;
+      }
+
+      section {
+        padding: 5rem 1.5rem;
+      }
+
+      .section-title {
+        font-size: 1.8rem;
+        margin-bottom: 3rem;
+      }
+
+      .story-block p {
+        font-size: 1.05rem;
+      }
+
+      .hydrangea-quote {
+        font-size: 1.1rem;
+      }
+
+      .hydrangea-message {
+        padding: 4rem 1.5rem;
+      }
+
+      .features-grid {
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 1.5rem;
+      }
+
+      .feature-card {
+        padding: 2rem 1.5rem;
+      }
+
+      .feature-icon {
+        font-size: 2rem;
+      }
+
+      .feature-title {
+        font-size: 1.1rem;
+      }
+
+      .feature-desc {
+        font-size: 0.9rem;
+      }
+
+      .for-you-list li {
+        font-size: 1.05rem;
+      }
+
+      .for-you-message {
+        font-size: 1.1rem;
+      }
+
+      .cta-message {
+        font-size: 1.05rem;
+      }
+
+      .line-button {
+        font-size: 1.15rem;
+        padding: 1rem 2.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== Hero ===== -->
+  <header class="hero">
+    <div class="rain-container" id="rain"></div>
+    <div class="hero-logo">GIVE</div>
+    <p class="hero-tagline">ひとりで抱えなくていい。</p>
+    <p class="hero-sub">誰かに話したいと思った時のための<br>無料の相談サービス</p>
+    <div class="scroll-hint">scroll</div>
+  </header>
+
+  <main>
+
+    <!-- ===== Story ===== -->
+    <section class="story">
+      <div class="section-inner">
+        <h2 class="section-title">GIVEが生まれた理由</h2>
+
+        <div class="story-block">
+          <p>高校生の頃から、「人の役に立ちたい」という思いがありました。その思いから、看護師を目指して専門学校に入りました。</p>
+        </div>
+
+        <div class="story-block">
+          <p>でも、真面目すぎる性格が自分を追い込みました。「もっとちゃんとしなきゃ」「これくらい乗り越えないと」——誰に言われたわけでもないのに、自分で自分にハードルを課し続けていました。</p>
+        </div>
+
+        <div class="story-block">
+          <p>つらくなっていることにも気づかないまま、毎日をこなしていました。<span class="story-highlight">誰かに話すという発想すらなかった。</span>相談するという選択肢が、自分の中にはじめから存在していませんでした。</p>
+        </div>
+
+        <hr class="story-divider">
+
+        <div class="story-block">
+          <p>結局、限界を迎えて、看護の道を諦めました。その後はスーパーで4年間働き、責任者も任されました。やりがいはあったけれど、「このままでいいのか」という気持ちがずっとあり、IT業界へ転職しました。</p>
+        </div>
+
+        <div class="story-block">
+          <p>今は、どの経験もよかったと思えています。でも、ひとつだけ——今でも心に残っていることがあります。</p>
+        </div>
+
+        <div class="story-block">
+          <p><span class="story-highlight">「あの頃、誰かに話すという選択肢を持てていたら。」</span></p>
+          <p>「ひとりで抱えなくてもいい」と知っていたら。誰かに頼ることが自分の中にあったなら。もしかしたら、違う道もあったかもしれない。</p>
+        </div>
+
+        <hr class="story-divider">
+
+        <div class="story-block">
+          <p>過去の自分は変えられません。でも、今この瞬間にも、あの頃の自分と同じように苦しんでいる人がいるかもしれない。</p>
+          <p>あの頃の自分になかった「誰かに話す」という選択肢を、今苦しんでいる誰かには知っていてほしい。頼っていいんだと思ってほしい。</p>
+          <p>だから、GIVEを始めました。</p>
+          <p><span class="story-highlight">自分にはなかった選択肢を、今、誰かに届けたい。</span>それがGIVEの原点です。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Hydrangea Message ===== -->
+    <section class="hydrangea-message">
+      <div class="section-inner">
+        <p class="hydrangea-quote">
+          つらい時に「誰かに話す」という選択肢があるだけで、<strong>少し楽になれることがあります。</strong>
+        </p>
+        <p class="hydrangea-quote" style="margin-top: 1.5rem;">
+          GIVEは、そのための場所です。
+        </p>
+        <p class="hydrangea-quote" style="margin-top: 1.5rem;">
+          話すことに理由はいりません。あなたのタイミングで、あなたの言葉で。
+        </p>
+      </div>
+    </section>
+
+    <!-- ===== Features ===== -->
+    <section class="features">
+      <div class="section-inner">
+        <h2 class="section-title">GIVEの特徴</h2>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">&#x1F4B0;</div>
+            <div class="feature-title">完全無料</div>
+            <p class="feature-desc">お金の心配はいりません。いつでも、何度でも。</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">&#x1F4AC;</div>
+            <div class="feature-title">LINEで相談</div>
+            <p class="feature-desc">普段使っているLINEでそのまま話せます。</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">&#x26A1;</div>
+            <div class="feature-title">登録不要</div>
+            <p class="feature-desc">友だち追加するだけ。アプリのダウンロードも不要。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== For You ===== -->
+    <section class="for-you">
+      <div class="section-inner">
+        <h2 class="section-title">こんな気持ちの方へ</h2>
+        <ul class="for-you-list">
+          <li>なんとなくモヤモヤするけど、誰に言えばいいかわからない</li>
+          <li>相談するほどじゃないかも、と思ってしまう</li>
+          <li>話したいけど、周りに心配をかけたくない</li>
+          <li>つらいのか疲れてるのか、自分でもよくわからない</li>
+          <li>ただ、誰かに聞いてほしい</li>
+        </ul>
+        <p class="for-you-message">
+          どんな小さなことでも大丈夫です。うまく話そうとしなくていい。準備も気づかいもいりません。思ったままを、そのまま聞かせてください。
+        </p>
+      </div>
+    </section>
+
+    <!-- ===== CTA ===== -->
+    <section class="cta">
+      <div class="section-inner">
+        <h2 class="section-title">LINEで話してみる</h2>
+        <p class="cta-message">
+          友だち追加しても、すぐに話さなくて大丈夫。<br>準備ができた時に、あなたのタイミングで。
+        </p>
+        <a href="https://lin.ee/9dvkBY3" class="line-button" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.627-.63h2.386c.349 0 .63.285.63.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.627-.63.349 0 .631.285.631.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/></svg>
+          友だち追加する
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== Footer ===== -->
+  <footer>
+    <p class="footer-disclaimer">GIVEは医療機関・カウンセリング機関ではありません。</p>
+    <p class="footer-copy">&copy; 2026 GIVE</p>
+  </footer>
+
+  <!-- ===== Rain + Scroll Animation ===== -->
+  <script>
+    // --- Rain Effect ---
+    (function createRain() {
+      const container = document.getElementById('rain');
+      const count = 40;
+      for (let i = 0; i < count; i++) {
+        const drop = document.createElement('div');
+        drop.className = 'raindrop';
+        drop.style.left = Math.random() * 100 + '%';
+        drop.style.animationDuration = (1.5 + Math.random() * 1.5) + 's';
+        drop.style.animationDelay = (Math.random() * 3) + 's';
+        drop.style.opacity = (0.15 + Math.random() * 0.25);
+        container.appendChild(drop);
+      }
+    })();
+
+    // --- Scroll Reveal ---
+    document.addEventListener('DOMContentLoaded', () => {
+      const targets = document.querySelectorAll(
+        '.story-block, .feature-card, .for-you-list li, .for-you-message, .hydrangea-message .section-inner'
+      );
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const delay = entry.target.closest('.features-grid, .for-you-list')
+              ? Array.from(entry.target.parentElement.children).indexOf(entry.target) * 100
+              : 0;
+            setTimeout(() => {
+              entry.target.classList.add('visible');
+            }, delay);
+            observer.unobserve(entry.target);
+          }
+        });
+      }, {
+        threshold: 0.15,
+        rootMargin: '0px 0px -40px 0px'
+      });
+
+      targets.forEach(target => observer.observe(target));
+    });
+  </script>
+
+</body>
+</html>
