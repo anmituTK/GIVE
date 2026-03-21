@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LINEアイコン生成</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'M PLUS Rounded 1c', sans-serif;
+      background: #f5f5f5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+      gap: 1.5rem;
+    }
+    h2 { font-size: 1rem; color: #555; }
+    canvas { border: 1px solid #ddd; border-radius: 50%; }
+    .btn {
+      font-family: 'M PLUS Rounded 1c', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      padding: 0.8rem 2rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      color: #fff;
+    }
+    .upload-btn { background: #8EB5D6; }
+    .upload-btn:hover { background: #7CA5C6; }
+    .download-btn { background: #6B8EB5; }
+    .download-btn:hover { background: #5A7DA3; }
+    .note { font-size: 0.85rem; color: #aaa; text-align: center; line-height: 1.8; }
+    .buttons { display: flex; gap: 1rem; }
+    #fileInput { display: none; }
+  </style>
+</head>
+<body>
+
+  <h2>LINEアイコン（640 x 640px）</h2>
+  <canvas id="canvas" width="640" height="640"></canvas>
+  <div class="buttons">
+    <button class="btn upload-btn" onclick="document.getElementById('fileInput').click()">画像を選択</button>
+    <button class="btn download-btn" onclick="downloadImage()">ダウンロード</button>
+  </div>
+  <input type="file" id="fileInput" accept="image/*">
+  <p class="note">
+    1. 「画像を選択」であじさいの画像（hydrangea.jpg）を選択<br>
+    2. プレビューを確認<br>
+    3. 「ダウンロード」で保存
+  </p>
+
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const SIZE = 640;
+    const CENTER = SIZE / 2;
+
+    document.getElementById('fileInput').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(ev) {
+        const img = new Image();
+        img.onload = function() {
+          document.fonts.ready.then(() => {
+            draw(img);
+          });
+        };
+        img.src = ev.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // Initial draw without image
+    document.fonts.ready.then(() => {
+      drawPlaceholder();
+    });
+
+    function drawPlaceholder() {
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(CENTER, CENTER, CENTER, 0, Math.PI * 2);
+      ctx.clip();
+      ctx.fillStyle = '#d0dde8';
+      ctx.fillRect(0, 0, SIZE, SIZE);
+      ctx.restore();
+
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillStyle = '#999';
+      ctx.font = '400 24px "M PLUS Rounded 1c"';
+      ctx.fillText('画像を選択してください', CENTER, CENTER);
+    }
+
+    function draw(img) {
+      ctx.clearRect(0, 0, SIZE, SIZE);
+
+      // Circle clip
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(CENTER, CENTER, CENTER, 0, Math.PI * 2);
+      ctx.clip();
+
+      // Draw image (cover)
+      const scale = Math.max(SIZE / img.naturalWidth, SIZE / img.naturalHeight);
+      const w = img.naturalWidth * scale;
+      const h = img.naturalHeight * scale;
+      const x = (SIZE - w) / 2;
+      const y = (SIZE - h) / 2;
+      ctx.drawImage(img, x, y, w, h);
+
+      // Light overlay
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+      ctx.fillRect(0, 0, SIZE, SIZE);
+
+      ctx.restore();
+
+      // GIVE text
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
+      ctx.shadowBlur = 20;
+      ctx.shadowOffsetX = 0;
+      ctx.shadowOffsetY = 4;
+      ctx.fillStyle = '#fff';
+      ctx.font = '700 160px "M PLUS Rounded 1c"';
+      ctx.fillText('Give', CENTER, CENTER);
+
+      // Reset shadow
+      ctx.shadowColor = 'transparent';
+      ctx.shadowBlur = 0;
+    }
+
+    function downloadImage() {
+      const link = document.createElement('a');
+      link.download = 'give_icon_640x640.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+  </script>
+
+</body>
+</html>

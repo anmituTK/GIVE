@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>リッチメニュー画像生成</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'M PLUS Rounded 1c', sans-serif;
+      background: #f5f5f5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+      gap: 1.5rem;
+    }
+    h2 { font-size: 1rem; color: #555; }
+    canvas { border: 1px solid #ddd; max-width: 100%; height: auto; }
+    .download-btn {
+      background: #6B8EB5;
+      color: #fff;
+      font-family: 'M PLUS Rounded 1c', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      padding: 0.8rem 2rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .download-btn:hover { background: #5A7DA3; }
+    .note { font-size: 0.85rem; color: #aaa; text-align: center; line-height: 1.8; }
+  </style>
+</head>
+<body>
+
+  <h2>リッチメニュー画像（2500 x 843px）</h2>
+  <canvas id="canvas" width="2500" height="843"></canvas>
+  <button class="download-btn" onclick="downloadImage()">画像をダウンロード</button>
+  <p class="note">
+    ダウンロードした画像を<br>
+    LINE公式アカウント管理画面 → リッチメニュー → 画像をアップロード<br>
+    で設定してください。
+  </p>
+
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const W = 2500;
+    const H = 843;
+    const HALF = W / 2;
+
+    // フォント読み込み待ち
+    document.fonts.ready.then(() => {
+      draw();
+    });
+
+    function draw() {
+      // 背景
+      ctx.fillStyle = '#F7FAFA';
+      ctx.fillRect(0, 0, W, H);
+
+      // 中央の仕切り線
+      ctx.strokeStyle = '#E0E8E8';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(HALF, 60);
+      ctx.lineTo(HALF, H - 60);
+      ctx.stroke();
+
+      // ===== 左: 話してみる =====
+      drawTalkIcon(HALF / 2, H / 2 - 80);
+      ctx.fillStyle = '#4A5E5E';
+      ctx.font = '700 72px "M PLUS Rounded 1c"';
+      ctx.textAlign = 'center';
+      ctx.fillText('話してみる', HALF / 2, H / 2 + 180);
+
+      // ===== 右: Giveについて =====
+      drawHydrangeaIcon(HALF + HALF / 2, H / 2 - 80);
+      ctx.fillStyle = '#4A5E5E';
+      ctx.font = '700 72px "M PLUS Rounded 1c"';
+      ctx.textAlign = 'center';
+      ctx.fillText('Giveについて', HALF + HALF / 2, H / 2 + 180);
+    }
+
+    function drawTalkIcon(cx, cy) {
+      const r = 140;
+
+      // 円背景
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, 0, Math.PI * 2);
+      ctx.fillStyle = '#D4E8E2';
+      ctx.fill();
+
+      // 吹き出し
+      ctx.strokeStyle = '#5A9E87';
+      ctx.lineWidth = 8;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+
+      // 吹き出し本体
+      const bx = cx - 55;
+      const by = cy - 60;
+      const bw = 110;
+      const bh = 75;
+      const br = 18;
+      ctx.beginPath();
+      ctx.moveTo(bx + br, by);
+      ctx.lineTo(bx + bw - br, by);
+      ctx.quadraticCurveTo(bx + bw, by, bx + bw, by + br);
+      ctx.lineTo(bx + bw, by + bh - br);
+      ctx.quadraticCurveTo(bx + bw, by + bh, bx + bw - br, by + bh);
+      ctx.lineTo(bx + 35, by + bh);
+      ctx.lineTo(bx + 18, by + bh + 25);
+      ctx.lineTo(bx + 25, by + bh);
+      ctx.lineTo(bx + br, by + bh);
+      ctx.quadraticCurveTo(bx, by + bh, bx, by + bh - br);
+      ctx.lineTo(bx, by + br);
+      ctx.quadraticCurveTo(bx, by, bx + br, by);
+      ctx.closePath();
+      ctx.stroke();
+
+      // ドット3つ
+      ctx.fillStyle = '#5A9E87';
+      for (let i = -1; i <= 1; i++) {
+        ctx.beginPath();
+        ctx.arc(cx + i * 28, cy - 22, 7, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    function drawHydrangeaIcon(cx, cy) {
+      const r = 140;
+
+      // 円背景
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, 0, Math.PI * 2);
+      ctx.fillStyle = '#D6E4EE';
+      ctx.fill();
+
+      // あじさいの花びら（丸い花の集まり）
+      const petalR = 32;
+      const petals = [
+        { x: cx - 28, y: cy - 35, color: '#A8C8E0' },
+        { x: cx + 28, y: cy - 35, color: '#B0D0E8' },
+        { x: cx - 50, y: cy + 2, color: '#9CC0D8' },
+        { x: cx, y: cy + 2, color: '#A8C8E0' },
+        { x: cx + 50, y: cy + 2, color: '#B0D0E8' },
+        { x: cx - 22, y: cy - 15, color: '#B8D4EC' },
+        { x: cx + 22, y: cy - 15, color: '#A0C4DC' },
+      ];
+
+      petals.forEach(p => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, petalR, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.fill();
+        ctx.strokeStyle = '#5A87A5';
+        ctx.lineWidth = 3;
+        ctx.stroke();
+      });
+
+      // 茎
+      ctx.strokeStyle = '#5A9E87';
+      ctx.lineWidth = 6;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(cx, cy + 32);
+      ctx.lineTo(cx, cy + 88);
+      ctx.stroke();
+
+      // 葉（左）
+      ctx.strokeStyle = '#5A9E87';
+      ctx.lineWidth = 5;
+      ctx.beginPath();
+      ctx.moveTo(cx, cy + 60);
+      ctx.quadraticCurveTo(cx - 40, cy + 52, cx - 32, cy + 35);
+      ctx.stroke();
+
+      // 葉（右）
+      ctx.beginPath();
+      ctx.moveTo(cx, cy + 70);
+      ctx.quadraticCurveTo(cx + 40, cy + 62, cx + 32, cy + 45);
+      ctx.stroke();
+    }
+
+    function downloadImage() {
+      const link = document.createElement('a');
+      link.download = 'richmenu_2500x843.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+  </script>
+
+</body>
+</html>

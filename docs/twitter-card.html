@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>X投稿用画像生成（1200x675px）</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 2rem;
+      background: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-family: 'M PLUS Rounded 1c', sans-serif;
+    }
+
+    h1 {
+      color: #fff;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .card {
+      width: 1200px;
+      height: 675px;
+      position: relative;
+      overflow: hidden;
+      background: #f0f4f0;
+    }
+
+    .card-bg {
+      position: absolute;
+      inset: 0;
+      background: url('hydrangea.jpg') center 50% / cover no-repeat;
+      filter: brightness(0.45);
+    }
+
+    .card-content {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .card-logo {
+      font-size: 5rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.15em;
+      text-shadow: 0 2px 20px rgba(0,0,0,0.3);
+      margin-bottom: 0.5rem;
+    }
+
+    .card-tagline {
+      font-size: 1.8rem;
+      color: rgba(255,255,255,0.95);
+      text-shadow: 0 1px 10px rgba(0,0,0,0.3);
+      margin-bottom: 1rem;
+    }
+
+    .card-sub {
+      font-size: 1.1rem;
+      color: rgba(255,255,255,0.8);
+      text-shadow: 0 1px 8px rgba(0,0,0,0.3);
+      line-height: 1.8;
+    }
+
+    .controls {
+      margin-top: 1.5rem;
+    }
+
+    .download-btn {
+      font-family: 'M PLUS Rounded 1c', sans-serif;
+      font-size: 1rem;
+      padding: 0.8rem 2rem;
+      border-radius: 50px;
+      border: none;
+      background: #6B8EB5;
+      color: #fff;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .download-btn:hover {
+      background: #5A7DA4;
+    }
+
+    .note {
+      color: #aaa;
+      font-size: 0.8rem;
+      margin-top: 0.8rem;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>X投稿用画像（1200 x 675px）</h1>
+
+  <div class="card" id="card">
+    <div class="card-bg"></div>
+    <div class="card-content">
+      <div class="card-logo">Give</div>
+      <div class="card-tagline">ひとりで抱えなくていい。</div>
+      <div class="card-sub">誰かに話したいと思った時のための<br>無料の相談サービス</div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <label class="download-btn" for="imageInput" style="display:inline-block; margin-bottom:0.8rem;">1. あじさい画像を選択</label>
+    <input type="file" id="imageInput" accept="image/*" style="display:none;">
+    <br>
+    <button class="download-btn" id="downloadBtn" style="opacity:0.4; pointer-events:none;">2. 画像をダウンロード</button>
+    <p class="note" id="status">まず画像ファイルを選択してください</p>
+  </div>
+
+  <canvas id="canvas" width="1200" height="675" style="display:none;"></canvas>
+
+  <script>
+    let loadedImage = null;
+    const downloadBtn = document.getElementById('downloadBtn');
+    const status = document.getElementById('status');
+    const cardBg = document.querySelector('.card-bg');
+
+    document.getElementById('imageInput').addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        loadedImage = new Image();
+        loadedImage.onload = () => {
+          cardBg.style.backgroundImage = `url('${ev.target.result}')`;
+          downloadBtn.style.opacity = '1';
+          downloadBtn.style.pointerEvents = 'auto';
+          status.textContent = '画像を読み込みました。ダウンロードできます。';
+        };
+        loadedImage.src = ev.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+
+    downloadBtn.addEventListener('click', () => {
+      if (!loadedImage) return;
+
+      const canvas = document.getElementById('canvas');
+      const ctx = canvas.getContext('2d');
+
+      const scale = Math.max(1200 / loadedImage.width, 675 / loadedImage.height);
+      const w = loadedImage.width * scale;
+      const h = loadedImage.height * scale;
+      const x = (1200 - w) / 2;
+      const y = (675 - h) / 2;
+
+      ctx.drawImage(loadedImage, x, y, w, h);
+
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.45)';
+      ctx.fillRect(0, 0, 1200, 675);
+
+      ctx.font = "700 96px 'M PLUS Rounded 1c'";
+      ctx.fillStyle = '#ffffff';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.shadowColor = 'rgba(0,0,0,0.3)';
+      ctx.shadowBlur = 20;
+      ctx.fillText('Give', 600, 270);
+
+      ctx.font = "400 36px 'M PLUS Rounded 1c'";
+      ctx.fillStyle = 'rgba(255,255,255,0.95)';
+      ctx.shadowBlur = 10;
+      ctx.fillText('ひとりで抱えなくていい。', 600, 370);
+
+      ctx.font = "400 22px 'M PLUS Rounded 1c'";
+      ctx.fillStyle = 'rgba(255,255,255,0.8)';
+      ctx.shadowBlur = 8;
+      ctx.fillText('誰かに話したいと思った時のための', 600, 440);
+      ctx.fillText('無料の相談サービス', 600, 475);
+
+      ctx.shadowBlur = 0;
+
+      const link = document.createElement('a');
+      link.download = 'give-twitter-card.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    });
+  </script>
+
+</body>
+</html>

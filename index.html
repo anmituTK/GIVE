@@ -7,31 +7,14 @@
   <meta name="description" content="Giveは、誰かに話したいと思った時のための無料相談サービスです。LINEで気軽に、誰かに話してみませんか。">
   <meta property="og:title" content="Give｜ひとりで抱えなくていい。">
   <meta property="og:description" content="無料・LINEで気軽に話せる場所。あなたの気持ちを、ここで少しだけ降ろしてみませんか。">
+  <meta property="og:image" content="https://give-kappa-ten.vercel.app/ogp.png">
   <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
   <style>
-    *, *::before, *::after {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      font-family: 'M PLUS Rounded 1c', sans-serif;
-      color: #3D3D3D;
-      background-color: #FFFAF5;
-      line-height: 1.9;
-      font-size: 15px;
-      -webkit-font-smoothing: antialiased;
-      -webkit-text-size-adjust: 100%;
-    }
-
     /* ========== Hero ========== */
     .hero {
       min-height: 100vh;
@@ -138,19 +121,6 @@
       padding: 3.5rem 1.25rem;
     }
 
-    .section-inner {
-      max-width: 720px;
-      margin: 0 auto;
-    }
-
-    .section-title {
-      font-size: 1.3rem;
-      font-weight: 700;
-      color: #6B8EB5;
-      text-align: center;
-      margin-bottom: 2rem;
-    }
-
     /* ========== Story ========== */
     .story {
       background-color: #FFFAF5;
@@ -186,6 +156,26 @@
       margin: 2.5rem auto;
       border: none;
       opacity: 0.5;
+    }
+
+    /* ========== Story Note Link ========== */
+    .story-note-link {
+      display: block;
+      text-align: center;
+      margin-top: 1rem;
+      font-size: 0.85rem;
+      color: #8EB5D6;
+      text-decoration: none;
+      opacity: 0;
+      transition: opacity 0.8s ease;
+    }
+
+    .story-note-link.visible {
+      opacity: 1;
+    }
+
+    .story-note-link:hover {
+      text-decoration: underline;
     }
 
     /* ========== Hydrangea Message ========== */
@@ -263,6 +253,88 @@
       line-height: 1.7;
     }
 
+    /* ========== Steps ========== */
+    .steps {
+      background: linear-gradient(180deg, #FFFAF5 0%, #F2F6FA 50%, #FFFAF5 100%);
+    }
+
+    .steps-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      position: relative;
+    }
+
+    .steps-list::before {
+      content: '';
+      position: absolute;
+      left: 22px;
+      top: 40px;
+      bottom: 40px;
+      width: 2px;
+      background: #D4E4F0;
+    }
+
+    .step-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .step-item.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .step-number {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #6B8EB5;
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .step-content {
+      padding-top: 0.4rem;
+    }
+
+    .step-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #5A7A9B;
+      margin-bottom: 0.2rem;
+    }
+
+    .step-desc {
+      font-size: 0.85rem;
+      color: #6B6B6B;
+      line-height: 1.7;
+    }
+
+    /* ========== Mid CTA ========== */
+    .mid-cta {
+      text-align: center;
+      padding: 2rem 1.25rem 2.5rem;
+      background: #FFFAF5;
+    }
+
+    .mid-cta-note {
+      margin-top: 0.8rem;
+      font-size: 0.8rem;
+      color: #aaa;
+    }
+
     /* ========== For You ========== */
     .for-you {
       background-color: #FFFAF5;
@@ -315,6 +387,114 @@
       opacity: 1;
     }
 
+    /* ========== FAQ ========== */
+    .faq {
+      background: linear-gradient(180deg, #FFFAF5 0%, #F2F6FA 50%, #FFFAF5 100%);
+    }
+
+    .faq-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .faq-item {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .faq-item.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .faq-question {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.1rem 1.25rem;
+      background: none;
+      border: none;
+      font-family: 'M PLUS Rounded 1c', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #5A7A9B;
+      cursor: pointer;
+      text-align: left;
+      line-height: 1.6;
+    }
+
+    .faq-question::before {
+      content: 'Q.';
+      color: #8EB5D6;
+      margin-right: 0.6rem;
+      flex-shrink: 0;
+    }
+
+    .faq-question-text {
+      flex: 1;
+    }
+
+    .faq-toggle {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      margin-left: 0.8rem;
+      position: relative;
+      transition: transform 0.3s ease;
+    }
+
+    .faq-toggle::before,
+    .faq-toggle::after {
+      content: '';
+      position: absolute;
+      background: #8EB5D6;
+      border-radius: 1px;
+      top: 50%;
+      left: 50%;
+    }
+
+    .faq-toggle::before {
+      width: 14px;
+      height: 2px;
+      transform: translate(-50%, -50%);
+    }
+
+    .faq-toggle::after {
+      width: 2px;
+      height: 14px;
+      transform: translate(-50%, -50%);
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    .faq-item.open .faq-toggle::after {
+      transform: translate(-50%, -50%) rotate(90deg);
+      opacity: 0;
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, padding 0.4s ease;
+    }
+
+    .faq-item.open .faq-answer {
+      max-height: 300px;
+    }
+
+    .faq-answer-inner {
+      padding: 0 1.25rem 1.2rem 2.6rem;
+      font-size: 0.88rem;
+      color: #6B6B6B;
+      line-height: 1.9;
+    }
+
     /* ========== CTA ========== */
     .cta {
       background: linear-gradient(180deg, #FFFAF5 0%, #F2F6FA 100%);
@@ -329,37 +509,6 @@
       line-height: 2;
     }
 
-    .line-button {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      background: #06C755;
-      color: #fff;
-      font-family: 'M PLUS Rounded 1c', sans-serif;
-      font-size: 1.05rem;
-      font-weight: 700;
-      padding: 0.9rem 2rem;
-      border-radius: 50px;
-      text-decoration: none;
-      box-shadow: 0 4px 16px rgba(6, 199, 85, 0.25);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .line-button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(6, 199, 85, 0.35);
-    }
-
-    .line-button:active {
-      transform: translateY(0);
-    }
-
-    .line-button svg {
-      width: 22px;
-      height: 22px;
-      fill: #fff;
-    }
-
     .cta-note {
       margin-top: 1.2rem;
       font-size: 0.8rem;
@@ -367,31 +516,8 @@
       line-height: 1.8;
     }
 
-    /* ========== Footer ========== */
-    footer {
-      text-align: center;
-      padding: 2rem 1.25rem;
-      background: #FFFAF5;
-      border-top: 1px solid #e8eef3;
-    }
-
-    .footer-disclaimer {
-      font-size: 0.75rem;
-      color: #aaa;
-      margin-bottom: 0.4rem;
-    }
-
-    .footer-copy {
-      font-size: 0.7rem;
-      color: #ccc;
-    }
-
     /* ========== PC (768px~) ========== */
     @media (min-width: 768px) {
-      body {
-        font-size: 16px;
-      }
-
       .hero-logo {
         font-size: 5rem;
       }
@@ -406,11 +532,6 @@
 
       section {
         padding: 5rem 1.5rem;
-      }
-
-      .section-title {
-        font-size: 1.8rem;
-        margin-bottom: 3rem;
       }
 
       .story-block p {
@@ -446,6 +567,18 @@
         font-size: 0.9rem;
       }
 
+      .steps-list::before {
+        left: 22px;
+      }
+
+      .step-title {
+        font-size: 1.1rem;
+      }
+
+      .step-desc {
+        font-size: 0.9rem;
+      }
+
       .for-you-list li {
         font-size: 1.05rem;
       }
@@ -454,14 +587,18 @@
         font-size: 1.1rem;
       }
 
+      .faq-question {
+        font-size: 1.05rem;
+      }
+
+      .faq-answer-inner {
+        font-size: 0.95rem;
+      }
+
       .cta-message {
         font-size: 1.05rem;
       }
 
-      .line-button {
-        font-size: 1.15rem;
-        padding: 1rem 2.5rem;
-      }
     }
   </style>
 </head>
@@ -477,6 +614,84 @@
   </header>
 
   <main>
+
+    <!-- ===== Hydrangea Message ===== -->
+    <section class="hydrangea-message">
+      <div class="section-inner">
+        <p class="hydrangea-quote">
+          つらい時に「誰かに話す」という選択肢があるだけで、<strong>少し楽になれることがあります。</strong>
+        </p>
+        <p class="hydrangea-quote" style="margin-top: 1.5rem;">
+          Giveは、そのための場所です。
+        </p>
+        <p class="hydrangea-quote" style="margin-top: 1.5rem;">
+          話すことに理由はいりません。あなたのタイミングで、あなたの言葉で。
+        </p>
+      </div>
+    </section>
+
+    <!-- ===== Features ===== -->
+    <section class="features">
+      <div class="section-inner">
+        <h2 class="section-title">Giveの特徴</h2>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">&#x1F4B0;</div>
+            <div class="feature-title">完全無料</div>
+            <p class="feature-desc">お金の心配はいりません。いつでも、何度でも。</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">&#x1F4AC;</div>
+            <div class="feature-title">LINEで相談</div>
+            <p class="feature-desc">普段使っているLINEでそのまま話せます。</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">&#x26A1;</div>
+            <div class="feature-title">登録不要</div>
+            <p class="feature-desc">友だち追加するだけ。アプリのダウンロードも不要。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Steps ===== -->
+    <section class="steps">
+      <div class="section-inner">
+        <h2 class="section-title">利用の流れ</h2>
+        <div class="steps-list">
+          <div class="step-item">
+            <div class="step-number">1</div>
+            <div class="step-content">
+              <div class="step-title">友だち追加する</div>
+              <p class="step-desc">このページの下にあるボタンから追加できます。</p>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-number">2</div>
+            <div class="step-content">
+              <div class="step-title">メッセージを送る</div>
+              <p class="step-desc">話したくなった時に、あなたのタイミングで。うまく言葉にならなくても大丈夫です。</p>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-number">3</div>
+            <div class="step-content">
+              <div class="step-title">返信が届く</div>
+              <p class="step-desc">いただいたメッセージを読んで、お返事します。少しお時間をいただくことがあります。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Mid CTA ===== -->
+    <div class="mid-cta">
+      <a href="https://lin.ee/9dvkBY3" class="line-button" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.627-.63h2.386c.349 0 .63.285.63.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.627-.63.349 0 .631.285.631.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/></svg>
+        友だち追加する
+      </a>
+      <p class="mid-cta-note">友だち追加しても、すぐに話さなくて大丈夫です。</p>
+    </div>
 
     <!-- ===== Story ===== -->
     <section class="story">
@@ -518,45 +733,7 @@
           <p>だから、Giveを始めました。</p>
           <p><span class="story-highlight">自分にはなかった選択肢を、今、誰かに届けたい。</span>それがGiveの原点です。</p>
         </div>
-      </div>
-    </section>
-
-    <!-- ===== Hydrangea Message ===== -->
-    <section class="hydrangea-message">
-      <div class="section-inner">
-        <p class="hydrangea-quote">
-          つらい時に「誰かに話す」という選択肢があるだけで、<strong>少し楽になれることがあります。</strong>
-        </p>
-        <p class="hydrangea-quote" style="margin-top: 1.5rem;">
-          Giveは、そのための場所です。
-        </p>
-        <p class="hydrangea-quote" style="margin-top: 1.5rem;">
-          話すことに理由はいりません。あなたのタイミングで、あなたの言葉で。
-        </p>
-      </div>
-    </section>
-
-    <!-- ===== Features ===== -->
-    <section class="features">
-      <div class="section-inner">
-        <h2 class="section-title">Giveの特徴</h2>
-        <div class="features-grid">
-          <div class="feature-card">
-            <div class="feature-icon">&#x1F4B0;</div>
-            <div class="feature-title">完全無料</div>
-            <p class="feature-desc">お金の心配はいりません。いつでも、何度でも。</p>
-          </div>
-          <div class="feature-card">
-            <div class="feature-icon">&#x1F4AC;</div>
-            <div class="feature-title">LINEで相談</div>
-            <p class="feature-desc">普段使っているLINEでそのまま話せます。</p>
-          </div>
-          <div class="feature-card">
-            <div class="feature-icon">&#x26A1;</div>
-            <div class="feature-title">登録不要</div>
-            <p class="feature-desc">友だち追加するだけ。アプリのダウンロードも不要。</p>
-          </div>
-        </div>
+        <a href="https://note.com/mild_dahlia3952/n/nb688ca5b7268" class="story-note-link" target="_blank" rel="noopener noreferrer">もっと詳しく読む（note）</a>
       </div>
     </section>
 
@@ -574,6 +751,51 @@
         <p class="for-you-message">
           どんな小さなことでも大丈夫です。うまく話そうとしなくていい。準備も気づかいもいりません。思ったままを、そのまま聞かせてください。
         </p>
+      </div>
+    </section>
+
+    <!-- ===== FAQ ===== -->
+    <section class="faq">
+      <div class="section-inner">
+        <h2 class="section-title">よくある質問</h2>
+        <div class="faq-list">
+          <div class="faq-item">
+            <button class="faq-question">
+              <span class="faq-question-text">どんな内容でも相談していいの？</span>
+              <span class="faq-toggle"></span>
+            </button>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">はい、内容に制限はありません。「こんなことで連絡していいのかな」と思うようなことでも大丈夫です。うまく言葉にならなくても、そのままで構いません。</div>
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question">
+              <span class="faq-question-text">返信はどれくらいで届きますか？</span>
+              <span class="faq-toggle"></span>
+            </button>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">個人で運営しているため、すぐにお返事できないこともあります。できるだけ早くお返ししますが、少しお時間をいただくことがあります。</div>
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question">
+              <span class="faq-question-text">個人情報は大丈夫ですか？</span>
+              <span class="faq-toggle"></span>
+            </button>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">個人が特定できる形で内容を共有することはありません。安心してお話しください。詳しくは<a href="privacy.html" style="color:#6B8EB5;">プライバシーポリシー</a>をご覧ください。</div>
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question">
+              <span class="faq-question-text">途中でやめてもいいですか？</span>
+              <span class="faq-toggle"></span>
+            </button>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">もちろんです。話したい時に話して、やめたい時にやめて大丈夫です。ブロックや友だち解除もいつでも自由にできます。</div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -596,6 +818,7 @@
   <!-- ===== Footer ===== -->
   <footer>
     <p class="footer-disclaimer">Giveは医療機関・カウンセリング機関ではありません。</p>
+    <p class="footer-disclaimer"><a href="privacy.html" style="color:#aaa; text-decoration:underline;">プライバシーポリシー</a></p>
     <p class="footer-copy">&copy; 2026 Give</p>
   </footer>
 
@@ -619,8 +842,18 @@
     // --- Scroll Reveal ---
     document.addEventListener('DOMContentLoaded', () => {
       const targets = document.querySelectorAll(
-        '.story-block, .feature-card, .for-you-list li, .for-you-message, .hydrangea-message .section-inner'
+        '.story-block, .story-note-link, .feature-card, .step-item, .for-you-list li, .for-you-message, .hydrangea-message .section-inner, .faq-item'
       );
+
+      // --- FAQ Accordion ---
+      document.querySelectorAll('.faq-question').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const item = btn.closest('.faq-item');
+          const isOpen = item.classList.contains('open');
+          document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+          if (!isOpen) item.classList.add('open');
+        });
+      });
 
       const observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
