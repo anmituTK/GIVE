@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Give 投稿管理</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'M PLUS Rounded 1c', sans-serif;
+      background: #f5f5f5;
+      color: #3D3D3D;
+      padding: 1rem;
+      padding-bottom: 5rem;
+    }
+
+    h1 {
+      font-size: 1.2rem;
+      text-align: center;
+      color: #6B8EB5;
+      margin-bottom: 0.5rem;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+
+    .tab {
+      font-family: 'M PLUS Rounded 1c', sans-serif;
+      padding: 0.5rem 1.2rem;
+      border-radius: 50px;
+      border: 2px solid #6B8EB5;
+      background: #fff;
+      color: #6B8EB5;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .tab.active {
+      background: #6B8EB5;
+      color: #fff;
+    }
+
+    .post-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 0.8rem;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+      display: flex;
+      align-items: flex-start;
+      gap: 0.8rem;
+    }
+
+    .post-card.hidden {
+      display: none;
+    }
+
+    .post-id {
+      font-size: 0.7rem;
+      color: #aaa;
+      white-space: nowrap;
+      padding-top: 0.2rem;
+    }
+
+    .post-body {
+      flex: 1;
+    }
+
+    .post-text {
+      font-size: 0.9rem;
+      line-height: 1.7;
+      color: #4a4a4a;
+    }
+
+    .post-url {
+      font-size: 0.75rem;
+      color: #aaa;
+      margin-top: 0.3rem;
+      word-break: break-all;
+    }
+
+    .copy-btn {
+      font-family: 'M PLUS Rounded 1c', sans-serif;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      border: none;
+      background: #6B8EB5;
+      color: #fff;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .copy-btn.copied {
+      background: #4CAF50;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #333;
+      color: #fff;
+      padding: 0.7rem 1.5rem;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+      z-index: 100;
+    }
+
+    .toast.show {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Give 投稿管理</h1>
+
+  <div class="tabs">
+    <button class="tab active" data-filter="all">すべて</button>
+    <button class="tab" data-filter="A">寄り添い</button>
+    <button class="tab" data-filter="B">紹介</button>
+  </div>
+
+  <div id="posts"></div>
+
+  <div class="toast" id="toast">コピーしました</div>
+
+  <script>
+    const posts = [
+      { id: "A-01", type: "A", text: "「相談するほどじゃない」って思うことほど、ほんとはずっと抱えてたりする。" },
+      { id: "A-02", type: "A", text: "誰かに話したいけど、誰に話せばいいかわからない。そういう時が一番しんどい。" },
+      { id: "A-03", type: "A", text: "「大丈夫」って言葉が、自分を守るためのものになってる時がある。" },
+      { id: "A-04", type: "A", text: "がんばってるから疲れてるんじゃなくて、がんばらなきゃって思ってること自体に疲れてる。" },
+      { id: "A-05", type: "A", text: "弱音を吐くのは弱いことじゃない。ずっと黙ってた方がよっぽどつらい。" },
+      { id: "A-06", type: "A", text: "「助けて」って言えないまま、気づいたら限界だった。そういう人、たぶん多い。" },
+      { id: "A-07", type: "A", text: "全部うまく言葉にならなくていい。「なんかしんどい」、それだけでも十分。" },
+      { id: "A-08", type: "A", text: "誰にも言えないまま夜を越えるのは、思ってるよりしんどいこと。" },
+      { id: "A-09", type: "A", text: "「もう少しがんばれる」って思ってる時が、実は一番危ない時だったりする。" },
+      { id: "A-10", type: "A", text: "泣きたいのに泣けない日がある。それだけで、もう十分がんばってる。" },
+      { id: "A-11", type: "A", text: "つらいって思っていいんだよ。誰かと比べなくていい。" },
+      { id: "A-12", type: "A", text: "「こんなことで悩んでるの自分だけかも」って思う。でも、そんなことない。" },
+      { id: "A-13", type: "A", text: "我慢が当たり前になってると、自分がつらいことにすら気づけなくなる。" },
+      { id: "A-14", type: "A", text: "ひとりで抱えてきたこと、少しだけ誰かに話してみるだけで、ちょっと軽くなることがある。" },
+      { id: "A-15", type: "A", text: "何がつらいかわからないけど、なんかつらい。そういう日もある。" },
+      { id: "A-16", type: "A", text: "「迷惑かけたくない」って気持ちが、自分を一番追い込んでたりする。" },
+      { id: "A-17", type: "A", text: "周りに合わせすぎて、自分の気持ちがわからなくなること、ある。" },
+      { id: "A-18", type: "A", text: "逃げたいって思うことは、自分を守ろうとしてる証拠。" },
+      { id: "A-19", type: "A", text: "休むことに理由はいらない。疲れたら休んでいい。" },
+      { id: "A-20", type: "A", text: "今日をやり過ごせただけで、それはもう十分すごいこと。" },
+      { id: "B-01", type: "B", text: "話したい時に、ただ話せる場所があってもいいと思う。Giveはそんな場所です。", url: "https://give-kappa-ten.vercel.app/" },
+      { id: "B-02", type: "B", text: "うまく話せなくても大丈夫。準備も気づかいもいりません。LINEで気軽にどうぞ。", url: "https://give-kappa-ten.vercel.app/" },
+      { id: "B-03", type: "B", text: "Giveは、誰かに話したいと思った時のための無料の相談サービスです。LINEで気軽に話せます。", url: "https://give-kappa-ten.vercel.app/" },
+      { id: "B-04", type: "B", text: "「誰かに聞いてほしい」、それだけで大丈夫。Giveはそのための場所です。", url: "https://give-kappa-ten.vercel.app/" },
+      { id: "B-05", type: "B", text: "相談じゃなくていい。ただ話すだけでいい。そんな場所がLINEにあります。", url: "https://give-kappa-ten.vercel.app/" },
+      { id: "B-06", type: "B", text: "友だち追加するだけ。話したくなった時に、あなたのタイミングで。", url: "https://give-kappa-ten.vercel.app/" },
+      { id: "B-07", type: "B", text: "「こんなことで連絡していいのかな」——いいんです。どんな小さなことでも。", url: "https://give-kappa-ten.vercel.app/" },
+      { id: "B-08", type: "B", text: "誰かに話すという選択肢があるだけで、少し楽になれることがある。Giveはそのための場所です。", url: "https://give-kappa-ten.vercel.app/" },
+      { id: "B-09", type: "B", text: "ひとりで抱えなくていい。LINEで気軽に話せる場所があります。", url: "https://give-kappa-ten.vercel.app/" },
+      { id: "B-10", type: "B", text: "登録不要、完全無料。LINEで友だち追加するだけで話せます。", url: "https://give-kappa-ten.vercel.app/" }
+    ];
+
+    const container = document.getElementById('posts');
+    const toast = document.getElementById('toast');
+
+    function renderPosts(filter) {
+      container.innerHTML = '';
+      posts.forEach(post => {
+        if (filter !== 'all' && post.type !== filter) return;
+
+        const copyText = post.url ? post.text + '\n' + post.url : post.text;
+
+        const card = document.createElement('div');
+        card.className = 'post-card';
+        card.innerHTML = `
+          <div class="post-id">${post.id}</div>
+          <div class="post-body">
+            <div class="post-text">${post.text}</div>
+            ${post.url ? `<div class="post-url">${post.url}</div>` : ''}
+          </div>
+          <button class="copy-btn" data-copy="${encodeURIComponent(copyText)}">コピー</button>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // Tab switching
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        renderPosts(tab.dataset.filter);
+      });
+    });
+
+    // Copy handler
+    container.addEventListener('click', async (e) => {
+      const btn = e.target.closest('.copy-btn');
+      if (!btn) return;
+
+      const text = decodeURIComponent(btn.dataset.copy);
+
+      try {
+        await navigator.clipboard.writeText(text);
+      } catch {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+      }
+
+      btn.textContent = '済';
+      btn.classList.add('copied');
+      toast.classList.add('show');
+
+      setTimeout(() => {
+        btn.textContent = 'コピー';
+        btn.classList.remove('copied');
+        toast.classList.remove('show');
+      }, 1500);
+    });
+
+    renderPosts('all');
+  </script>
+
+</body>
+</html>
