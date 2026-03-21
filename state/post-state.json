@@ -1,5 +1,7 @@
 {
-  "usedA": [],
+  "usedA": [
+    "A-10"
+  ],
   "usedB": [],
-  "rotationCount": 0
+  "rotationCount": 1
 }
