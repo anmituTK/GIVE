@@ -88,6 +88,12 @@
       word-break: break-all;
     }
 
+    .post-tags {
+      font-size: 0.8rem;
+      color: #6B8EB5;
+      margin-top: 0.3rem;
+    }
+
     .copy-btn {
       font-family: 'M PLUS Rounded 1c', sans-serif;
       padding: 0.5rem 1rem;
@@ -194,6 +200,7 @@
           <div class="post-body">
             <div class="post-text">${post.text}</div>
             ${post.url ? `<div class="post-url">${post.url}</div>` : ''}
+            ${post.tags ? `<div class="post-tags">${post.tags.trim()}</div>` : ''}
           </div>
           <button class="copy-btn" data-copy="${encodeURIComponent(copyText)}">コピー</button>
         `;
