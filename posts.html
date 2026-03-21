@@ -7,13 +7,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
     body {
-      font-family: 'M PLUS Rounded 1c', sans-serif;
       background: #f5f5f5;
-      color: #3D3D3D;
       padding: 1rem;
       padding-bottom: 5rem;
     }
@@ -148,41 +145,9 @@
   <div class="toast" id="toast">コピーしました</div>
 
   <script>
-    const posts = [
-      { id: "A-01", type: "A", text: "「相談するほどじゃない」って思うことほど、ほんとはずっと抱えてたりする。\n\n#生きづらさ" },
-      { id: "A-02", type: "A", text: "誰かに話したいけど、誰に話せばいいかわからない。そういう時が一番しんどい。\n\n#しんどい" },
-      { id: "A-03", type: "A", text: "「大丈夫」って言葉が、自分を守るためのものになってる時がある。\n\n#生きづらさ" },
-      { id: "A-04", type: "A", text: "がんばってるから疲れてるんじゃなくて、がんばらなきゃって思ってること自体に疲れてる。\n\n#しんどい" },
-      { id: "A-05", type: "A", text: "弱音を吐くのは弱いことじゃない。ずっと黙ってた方がよっぽどつらい。\n\n#誰かに話したい" },
-      { id: "A-06", type: "A", text: "「助けて」って言えないまま、気づいたら限界だった。そういう人、たぶん多い。\n\n#生きづらさ" },
-      { id: "A-07", type: "A", text: "全部うまく言葉にならなくていい。「なんかしんどい」、それだけでも十分。\n\n#しんどい" },
-      { id: "A-08", type: "A", text: "誰にも言えないまま夜を越えるのは、思ってるよりしんどいこと。\n\n#生きづらさ" },
-      { id: "A-09", type: "A", text: "「もう少しがんばれる」って思ってる時が、実は一番危ない時だったりする。\n\n#しんどい" },
-      { id: "A-10", type: "A", text: "泣きたいのに泣けない日がある。それだけで、もう十分がんばってる。\n\n#生きづらさ" },
-      { id: "A-11", type: "A", text: "つらいって思っていいんだよ。誰かと比べなくていい。\n\n#生きづらさ" },
-      { id: "A-12", type: "A", text: "「こんなことで悩んでるの自分だけかも」って思う。でも、そんなことない。\n\n#誰かに話したい" },
-      { id: "A-13", type: "A", text: "我慢が当たり前になってると、自分がつらいことにすら気づけなくなる。\n\n#しんどい" },
-      { id: "A-14", type: "A", text: "ひとりで抱えてきたこと、少しだけ誰かに話してみるだけで、ちょっと軽くなることがある。\n\n#誰かに話したい" },
-      { id: "A-15", type: "A", text: "何がつらいかわからないけど、なんかつらい。そういう日もある。\n\n#しんどい" },
-      { id: "A-16", type: "A", text: "「迷惑かけたくない」って気持ちが、自分を一番追い込んでたりする。\n\n#生きづらさ" },
-      { id: "A-17", type: "A", text: "周りに合わせすぎて、自分の気持ちがわからなくなること、ある。\n\n#生きづらさ" },
-      { id: "A-18", type: "A", text: "逃げたいって思うことは、自分を守ろうとしてる証拠。\n\n#しんどい" },
-      { id: "A-19", type: "A", text: "休むことに理由はいらない。疲れたら休んでいい。\n\n#生きづらさ" },
-      { id: "A-20", type: "A", text: "今日をやり過ごせただけで、それはもう十分すごいこと。\n\n#しんどい" },
-      { id: "B-01", type: "B", text: "話したい時に、ただ話せる場所があってもいいと思う。Giveはそんな場所です。", url: "https://give-kappa-ten.vercel.app/", tags: "\n\n#Give #LINE相談" },
-      { id: "B-02", type: "B", text: "うまく話せなくても大丈夫。準備も気づかいもいりません。LINEで気軽にどうぞ。", url: "https://give-kappa-ten.vercel.app/", tags: "\n\n#Give #LINE相談" },
-      { id: "B-03", type: "B", text: "Giveは、誰かに話したいと思った時のための無料の相談サービスです。LINEで気軽に話せます。", url: "https://give-kappa-ten.vercel.app/", tags: "\n\n#Give #LINE相談" },
-      { id: "B-04", type: "B", text: "「誰かに聞いてほしい」、それだけで大丈夫。Giveはそのための場所です。", url: "https://give-kappa-ten.vercel.app/", tags: "\n\n#Give #LINE相談 #誰かに話したい" },
-      { id: "B-05", type: "B", text: "相談じゃなくていい。ただ話すだけでいい。そんな場所がLINEにあります。", url: "https://give-kappa-ten.vercel.app/", tags: "\n\n#Give #LINE相談" },
-      { id: "B-06", type: "B", text: "友だち追加するだけ。話したくなった時に、あなたのタイミングで。", url: "https://give-kappa-ten.vercel.app/", tags: "\n\n#Give #LINE相談" },
-      { id: "B-07", type: "B", text: "「こんなことで連絡していいのかな」——いいんです。どんな小さなことでも。", url: "https://give-kappa-ten.vercel.app/", tags: "\n\n#Give #LINE相談 #誰かに話したい" },
-      { id: "B-08", type: "B", text: "誰かに話すという選択肢があるだけで、少し楽になれることがある。Giveはそのための場所です。", url: "https://give-kappa-ten.vercel.app/", tags: "\n\n#Give #LINE相談" },
-      { id: "B-09", type: "B", text: "ひとりで抱えなくていい。LINEで気軽に話せる場所があります。", url: "https://give-kappa-ten.vercel.app/", tags: "\n\n#Give #LINE相談 #生きづらさ" },
-      { id: "B-10", type: "B", text: "登録不要、完全無料。LINEで友だち追加するだけで話せます。", url: "https://give-kappa-ten.vercel.app/", tags: "\n\n#Give #LINE相談" }
-    ];
-
     const container = document.getElementById('posts');
     const toast = document.getElementById('toast');
+    let posts = [];
 
     function renderPosts(filter) {
       container.innerHTML = '';
@@ -190,7 +155,7 @@
         if (filter !== 'all' && post.type !== filter) return;
 
         const copyText = post.url
-          ? post.text + '\n' + post.url + (post.tags || '')
+          ? post.text + '\n' + post.url + (post.tags ? '\n\n' + post.tags : '')
           : post.text;
 
         const card = document.createElement('div');
@@ -200,13 +165,21 @@
           <div class="post-body">
             <div class="post-text">${post.text}</div>
             ${post.url ? `<div class="post-url">${post.url}</div>` : ''}
-            ${post.tags ? `<div class="post-tags">${post.tags.trim()}</div>` : ''}
+            ${post.tags ? `<div class="post-tags">${post.tags}</div>` : ''}
           </div>
           <button class="copy-btn" data-copy="${encodeURIComponent(copyText)}">コピー</button>
         `;
         container.appendChild(card);
       });
     }
+
+    // Load posts from JSON
+    fetch('data/posts.json')
+      .then(res => res.json())
+      .then(data => {
+        posts = data.posts;
+        renderPosts('all');
+      });
 
     // Tab switching
     document.querySelectorAll('.tab').forEach(tab => {
@@ -245,8 +218,6 @@
         toast.classList.remove('show');
       }, 1500);
     });
-
-    renderPosts('all');
   </script>
 
 </body>

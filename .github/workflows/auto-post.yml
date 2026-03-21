@@ -1,0 +1,62 @@
+name: Auto Post to X
+
+on:
+  schedule:
+    # JST = UTC+9
+    - cron: '0 23 * * *'   # 8:00 JST
+    - cron: '0 3 * * *'    # 12:00 JST
+    - cron: '0 10 * * *'   # 19:00 JST
+  workflow_dispatch: {}     # 手動実行用
+
+concurrency:
+  group: auto-post
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Post to X
+        id: post
+        env:
+          X_API_KEY: ${{ secrets.X_API_KEY }}
+          X_API_SECRET: ${{ secrets.X_API_SECRET }}
+          X_ACCESS_TOKEN: ${{ secrets.X_ACCESS_TOKEN }}
+          X_ACCESS_SECRET: ${{ secrets.X_ACCESS_SECRET }}
+        run: node scripts/post-to-x.mjs
+
+      - name: Commit state changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add state/post-state.json
+          git diff --staged --quiet || (git commit -m "Update post state [skip ci]" && git push)
+
+      - name: Send cycle notification email
+        if: steps.post.outputs.cycle_completed == 'true'
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.GMAIL_USER }}
+          password: ${{ secrets.GMAIL_APP_PASSWORD }}
+          subject: "Give 投稿サイクル完了通知"
+          body: |
+            ${{ steps.post.outputs.cycle_message }}
+
+            完了タイプ: ${{ steps.post.outputs.completed_type }}
+            次のサイクルが開始されました。
+          to: sheart.slove@gmail.com
+          from: ${{ secrets.GMAIL_USER }}
