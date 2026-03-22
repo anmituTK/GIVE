@@ -6,7 +6,12 @@ on:
     - cron: '0 23 * * *'   # 8:00 JST
     - cron: '0 3 * * *'    # 12:00 JST
     - cron: '0 10 * * *'   # 19:00 JST
-  workflow_dispatch: {}     # 手動実行用
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'テスト実行（投稿せず状態も更新しない）'
+        type: boolean
+        default: true
 
 concurrency:
   group: auto-post
@@ -35,6 +40,7 @@ jobs:
           X_API_SECRET: ${{ secrets.X_API_SECRET }}
           X_ACCESS_TOKEN: ${{ secrets.X_ACCESS_TOKEN }}
           X_ACCESS_SECRET: ${{ secrets.X_ACCESS_SECRET }}
+          DRY_RUN: ${{ github.event.inputs.dry_run || 'false' }}
         run: node scripts/post-to-x.mjs
 
       - name: Commit state changes

@@ -2,6 +2,12 @@ import { readFileSync, writeFileSync } from 'fs';
 import { TwitterApi } from 'twitter-api-v2';
 import { appendFileSync } from 'fs';
 
+// ---- Dry-run mode (手動テスト用: 投稿せず状態も更新しない) ----
+const isDryRun = process.env.DRY_RUN === 'true';
+if (isDryRun) {
+  console.log('=== DRY RUN MODE (投稿・状態更新をスキップ) ===');
+}
+
 // ---- Load data ----
 const posts = JSON.parse(readFileSync('data/posts.json', 'utf-8')).posts;
 const state = JSON.parse(readFileSync('state/post-state.json', 'utf-8'));
@@ -41,29 +47,34 @@ console.log(`Type: ${postType} | ID: ${selected.id}`);
 console.log(`Tweet: ${tweetText}`);
 
 // ---- Post to X ----
-const client = new TwitterApi({
-  appKey: process.env.X_API_KEY,
-  appSecret: process.env.X_API_SECRET,
-  accessToken: process.env.X_ACCESS_TOKEN,
-  accessSecret: process.env.X_ACCESS_SECRET,
-});
+if (isDryRun) {
+  console.log('DRY RUN: 投稿をスキップしました');
+  console.log('DRY RUN: 状態更新をスキップしました');
+} else {
+  const client = new TwitterApi({
+    appKey: process.env.X_API_KEY,
+    appSecret: process.env.X_API_SECRET,
+    accessToken: process.env.X_ACCESS_TOKEN,
+    accessSecret: process.env.X_ACCESS_SECRET,
+  });
 
-try {
-  const result = await client.v2.tweet(tweetText);
-  console.log(`Posted successfully: ${result.data.id}`);
-} catch (error) {
-  console.error(`Failed to post: ${error.message}`);
-  if (error.data) {
-    console.error(JSON.stringify(error.data, null, 2));
+  try {
+    const result = await client.v2.tweet(tweetText);
+    console.log(`Posted successfully: ${result.data.id}`);
+  } catch (error) {
+    console.error(`Failed to post: ${error.message}`);
+    if (error.data) {
+      console.error(JSON.stringify(error.data, null, 2));
+    }
+    process.exit(1);
   }
-  process.exit(1);
-}
 
-// ---- Update state ----
-state[usedKey].push(selected.id);
-state.rotationCount += 1;
-writeFileSync('state/post-state.json', JSON.stringify(state, null, 2) + '\n');
-console.log('State updated.');
+  // ---- Update state ----
+  state[usedKey].push(selected.id);
+  state.rotationCount += 1;
+  writeFileSync('state/post-state.json', JSON.stringify(state, null, 2) + '\n');
+  console.log('State updated.');
+}
 
 // ---- Set GitHub Actions outputs ----
 const ghOutput = process.env.GITHUB_OUTPUT;
