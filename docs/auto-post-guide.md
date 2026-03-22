@@ -81,7 +81,16 @@ GitHub Actionsが自動コミット
 
 1. https://github.com/anmituTK/GIVE/actions にアクセス
 2. 「Auto Post to X」を選択
-3. 「Run workflow」→ Branch: main → 「Run workflow」
+3. 「Run workflow」をクリック
+
+### テスト実行（デフォルト）
+- 「テスト実行」にチェックが入った状態で「Run workflow」
+- 投稿されず、ローテーション状態も更新されない
+- ログで次に投稿される内容を確認できる
+
+### 本番実行
+- 「テスト実行」のチェックを外して「Run workflow」
+- 実際にXに投稿され、状態も更新される
 
 ## コスト
 
