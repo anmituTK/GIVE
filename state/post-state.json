@@ -6,12 +6,13 @@
     "A-02",
     "A-16",
     "A-19",
-    "A-03"
+    "A-03",
+    "A-14"
   ],
   "usedB": [
     "B-01",
     "B-02",
     "B-04"
   ],
-  "rotationCount": 10
+  "rotationCount": 11
 }
