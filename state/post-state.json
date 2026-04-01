@@ -6,7 +6,8 @@
     "A-01"
   ],
   "usedB": [
-    "B-03"
+    "B-03",
+    "B-02"
   ],
-  "rotationCount": 35
+  "rotationCount": 36
 }
